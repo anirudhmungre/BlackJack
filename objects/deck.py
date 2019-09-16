@@ -2,13 +2,17 @@ from objects.card import Card
 from random import shuffle
 
 class Deck:
-    def __init__(self):
-        self._cards = self.build()
+    def __init__(self, num_decks: int = 1):
+        self._cards = self.build(num_decks)
     
-    def build(self) -> list():
+    @property
+    def num_cards(self) -> int:
+        return len(self._cards)
+    
+    def build(self, num_decks: int) -> list():
         cards = []
         suits = ['S', 'C', 'D', 'H']
-        cards = [ Card(s, v) for s in suits for v in range(1, 14) ]
+        cards = [ Card(s, v) for _ in range(0, num_decks) for s in suits for v in range(1, 14) ]
         return cards
     
     def show_cards(self) -> None:
