@@ -3,6 +3,8 @@ from objects.deck import Deck
 from objects.card import Card
 from objects.hand import Hand
 
+from time import sleep
+
 def init_cards() -> Deck:
     deck = Deck(NUM_DECKS)
     print('Deck Initialized')
@@ -36,13 +38,43 @@ def player_play(deck: Deck, player_hand: Hand) -> Hand:
             playing = False
     return player_hand
 
-def dealer_play(deck: Deck, dealer_hand) -> Hand:
-    raise NotImplementedError
+def dealer_play(deck: Deck, dealer_hand: Hand) -> Hand:
+    sleep(1)
+    print(f'Dealer Has: {dealer_hand.cards}')
+    while dealer_hand.value < 17:
+        sleep(1)
+        dealer_hand.hit(deck)
+        print(f'Dealer Has: {dealer_hand.cards}')
+    return dealer_hand
 
 def play_hand(deck: Deck, player_hand: Hand, dealer_hand: Hand):
     player_hand = player_play(deck, player_hand)
     if player_hand.value <= 21:
         dealer_hand = dealer_play(deck, dealer_hand)
+        if dealer_hand.value > 21:
+            print('''
+        -----------
+        Dealer Bust
+        -----------
+            ''')
+        elif dealer_hand.value < player_hand.value:
+            print('''
+        -----------
+        Player Wins
+        -----------
+            ''')
+        elif dealer_hand.value > player_hand.value:
+            print('''
+        -----------
+        Dealer Wins
+        -----------
+            ''')
+        else:
+            print('''
+        -----------
+        Player Push
+        -----------
+            ''')
     else:
         print('''
         -----------
