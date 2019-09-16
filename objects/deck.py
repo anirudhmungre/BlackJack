@@ -9,9 +9,10 @@ class Deck:
     def num_cards(self) -> int:
         return len(self._cards)
     
-    def build(self, num_decks: int) -> list():
+    @staticmethod
+    def build(num_decks: int) -> list():
         cards = []
-        suits = ['S', 'C', 'D', 'H']
+        suits = ['♠', '♣', '♦', '♥']
         cards = [ Card(s, v) for _ in range(0, num_decks) for s in suits for v in range(1, 14) ]
         return cards
     

@@ -4,10 +4,21 @@ class Card:
         self._value = value
     
     def __str__(self):
-        return f'{self._value}{self._suit}'
+        name_val = {
+            1: 'A',
+            11: 'J',
+            12: 'Q',
+            13: 'K'
+        }
+        val = self.value
+        if self._value > 10 or self.value == 1:
+            val = name_val[self._value]
+        return f'{val}{self.suit}'
 
     @property
     def value(self) -> int:
+        if self._value > 10:
+            return 10
         return self._value
     
     @property
