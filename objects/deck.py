@@ -21,3 +21,6 @@ class Deck:
 
     def shuffle(self) -> None:
         shuffle(self._cards)
+    
+    def deal_card(self) -> Card:
+        return self._cards.pop()
