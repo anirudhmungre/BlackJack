@@ -2,7 +2,7 @@ from objects.card import Card
 from random import shuffle
 
 class Deck:
-    def __init__(self, num_decks: int = 1):
+    def __init__(self, num_decks: int = 1) -> None:
         self._cards = self.build(num_decks)
     
     @property

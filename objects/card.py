@@ -1,9 +1,9 @@
 class Card:
-    def __init__(self, suit: str, value: int):
+    def __init__(self, suit: str, value: int) -> None:
         self._suit = suit
         self._value = value
     
-    def __str__(self):
+    def __str__(self) -> str:
         name_val = {
             1: 'A',
             10: 'T',
@@ -23,7 +23,7 @@ class Card:
  │    {self.suit}    │
  │         │
  │         │
- │        {val}│                         
+ │        {val}│
  └─────────┘"""
         # return f'{val}{self.suit}'
 

@@ -6,7 +6,7 @@ from objects.hand import Hand
 
 from time import sleep
 
-def clear():
+def clear() -> None:
     _ = system('cls' if name == 'nt' else 'clear')
 
 def init_cards() -> Deck:
@@ -57,7 +57,7 @@ def dealer_play(deck: Deck, dealer_hand: Hand, player_hand: Hand) -> Hand:
         print(f'Player Has: {player_hand.cards}')
     return dealer_hand
 
-def play_hand(deck: Deck, player_hand: Hand, dealer_hand: Hand):
+def play_hand(deck: Deck, player_hand: Hand, dealer_hand: Hand) -> None:
     player_hand = player_play(deck, player_hand, dealer_hand)
     if player_hand.value <= 21:
         dealer_hand = dealer_play(deck, dealer_hand, player_hand)
@@ -103,7 +103,7 @@ def play(deck: Deck) -> None:
         clear()
 
 
-def main():
+def main() -> None:
     clear()
     deck = init_cards()
     play(deck)
