@@ -79,7 +79,7 @@ def play_hand(deck: Deck, player_hand: Hand, dealer_hand: Hand) -> None:
         Dealer Wins
         -----------
             ''')
-        else:
+        elif dealer_hand.value == player_hand.value:
             print('''
         -----------
         Player Push

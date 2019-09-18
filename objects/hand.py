@@ -19,11 +19,16 @@ class Hand:
     
     @property
     def cards(self) -> str:
+        if 'A' in f'{self}' and self.value < 21 and sum([c.value for c in self._cards]) + 10 < 21:
+            return f'({self.value - 10}/{self.value}) {self}'
         return f'({self.value}) {self}'
     
     @property
     def value(self) -> int:
-        return sum([c.value for c in self._cards])
+        small_value = sum([c.value for c in self._cards])
+        if 'A' in f'{self}' and small_value + 10 <= 21:
+            return small_value + 10
+        return small_value
     
     def hit(self, deck: Deck) -> None:
         self._cards.append(deck.deal_card())
