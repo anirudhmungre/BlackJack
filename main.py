@@ -38,6 +38,7 @@ def player_play(deck: Deck, player_hand: Hand, dealer_hand: Hand) -> Hand:
         if action.lower() == 'hit':
             player_hand.hit(deck)
             clear()
+            print(f'Cards Left: {deck.num_cards}')
             print(f'Dealer Showing: {dealer_hand.first_card}')
             print(f'Player Has: {player_hand.cards}')
         elif action.lower() == 'stand':
@@ -47,12 +48,14 @@ def player_play(deck: Deck, player_hand: Hand, dealer_hand: Hand) -> Hand:
 def dealer_play(deck: Deck, dealer_hand: Hand, player_hand: Hand) -> Hand:
     sleep(1)
     clear()
+    print(f'Cards Left: {deck.num_cards}')
     print(f'Dealer Has: {dealer_hand.cards}')
     print(f'Player Has: {player_hand.cards}')
     while dealer_hand.value < 17:
         sleep(1)
         clear()
         dealer_hand.hit(deck)
+        print(f'Cards Left: {deck.num_cards}')
         print(f'Dealer Has: {dealer_hand.cards}')
         print(f'Player Has: {player_hand.cards}')
     return dealer_hand
@@ -92,21 +95,25 @@ def play_hand(deck: Deck, player_hand: Hand, dealer_hand: Hand) -> None:
         -----------
         ''')
 
-def play(deck: Deck) -> None:
+def play() -> None:
     play_again = ''
-    while deck.num_cards > deck.num_cards / 2 and not play_again:
-        player_hand, dealer_hand = init_hands(deck)
-        print(f'Dealer Showing: {dealer_hand.first_card}')
-        print(f'Player Has: {player_hand.cards}')
-        play_hand(deck, player_hand, dealer_hand)
-        play_again = input('Press enter to play again!')
-        clear()
+    while play_again == '':
+        deck = init_cards()
+        print('Shoe Changed')
+        while deck.num_cards > NUM_DECKS*52 / 2 and not play_again:
+            player_hand, dealer_hand = init_hands(deck)
+            print(f'Cards Left: {deck.num_cards}')
+            print(f'Dealer Showing: {dealer_hand.first_card}')
+            print(f'Player Has: {player_hand.cards}')
+            play_hand(deck, player_hand, dealer_hand)
+            play_again = input('Press enter to play again!')
+            clear()
+    
 
 
 def main() -> None:
     clear()
-    deck = init_cards()
-    play(deck)
+    play()
 
 if __name__ == '__main__':
     main()
