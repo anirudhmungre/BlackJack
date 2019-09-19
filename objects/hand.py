@@ -30,6 +30,10 @@ class Hand:
             return small_value + 10
         return small_value
     
+    @property
+    def num_cards(self) -> int:
+        return len(self._cards)
+    
     def hit(self, deck: Deck) -> None:
         self._cards.append(deck.deal_card())
     

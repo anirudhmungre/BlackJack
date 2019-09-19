@@ -3,6 +3,7 @@ from constants import NUM_DECKS
 from objects.deck import Deck
 from objects.card import Card
 from objects.hand import Hand
+from msvcrt import getch
 
 from time import sleep
 
@@ -29,65 +30,86 @@ def init_hands(deck: Deck) -> list():
     print('Hands Initialized')
     return player_hand, dealer_hand
 
+def cards_and_results(deck: Deck, player_hand: Hand, dealer_hand: Hand, player_turn: bool = False) -> None:
+    print(f'Cards Left: {deck.num_cards}')
+    if player_turn:
+        print(f'Dealer Showing: {dealer_hand.first_card}')
+    else:
+        print(f'Dealer Showing: {dealer_hand.cards}')
+    print(f'Player Has: {player_hand.cards}')
+    
+
 def player_play(deck: Deck, player_hand: Hand, dealer_hand: Hand) -> Hand:
     playing = True
-    while player_hand.value <= 21 and playing:
-        action = input("What would you like to do? ")
-        while action.lower() not in ['hit', 'stand']:
-            action = input("Available Actions: Hit, Stand: ")
-        if action.lower() == 'hit':
+    while player_hand.value < 21 and playing:
+        print("What would you like to do? Hit(h) or Stand(s) ")
+        action = getch()
+        while action.lower() not in [b'h', b's']:
+            print("Available Actions: Hit (h) or Stand(s) ")
+            action = getch()
+        if action.lower() == b'h':
             player_hand.hit(deck)
             clear()
-            print(f'Cards Left: {deck.num_cards}')
-            print(f'Dealer Showing: {dealer_hand.first_card}')
-            print(f'Player Has: {player_hand.cards}')
-        elif action.lower() == 'stand':
+            cards_and_results(deck, player_hand, dealer_hand, True)
+        elif action.lower() == b's':
             playing = False
     return player_hand
 
 def dealer_play(deck: Deck, dealer_hand: Hand, player_hand: Hand) -> Hand:
     sleep(1)
     clear()
-    print(f'Cards Left: {deck.num_cards}')
-    print(f'Dealer Has: {dealer_hand.cards}')
-    print(f'Player Has: {player_hand.cards}')
+    cards_and_results(deck, player_hand, dealer_hand)
     while dealer_hand.value < 17:
         sleep(1)
         clear()
         dealer_hand.hit(deck)
-        print(f'Cards Left: {deck.num_cards}')
-        print(f'Dealer Has: {dealer_hand.cards}')
-        print(f'Player Has: {player_hand.cards}')
+        cards_and_results(deck, player_hand, dealer_hand)
     return dealer_hand
 
 def play_hand(deck: Deck, player_hand: Hand, dealer_hand: Hand) -> None:
     player_hand = player_play(deck, player_hand, dealer_hand)
     if player_hand.value <= 21:
-        dealer_hand = dealer_play(deck, dealer_hand, player_hand)
-        if dealer_hand.value > 21:
-            print('''
+        if player_hand.num_cards == 2 and player_hand.value == 21:
+            clear()
+            cards_and_results(deck, player_hand, dealer_hand)
+            if dealer_hand.value == 21:
+                print('''
+        -----------
+        Player push
+        -----------
+            ''')
+            else:
+                print('''
+        -----------------
+        Player BLACKJACK!
+        -----------------
+            ''')
+        else:
+            dealer_hand = dealer_play(deck, dealer_hand, player_hand)
+            if dealer_hand.value > 21:
+                print('''
         -----------
         Dealer Bust
         -----------
-            ''')
-        elif dealer_hand.value < player_hand.value:
-            print('''
+                ''')
+            elif dealer_hand.value < player_hand.value:
+                print('''
         -----------
         Player Wins
         -----------
-            ''')
-        elif dealer_hand.value > player_hand.value:
-            print('''
+                ''')
+            elif dealer_hand.value > player_hand.value:
+                print('''
         -----------
         Dealer Wins
         -----------
-            ''')
-        elif dealer_hand.value == player_hand.value:
-            print('''
+                ''')
+            elif dealer_hand.value == player_hand.value:
+                print('''
         -----------
         Player Push
         -----------
-            ''')
+                ''')
     else:
         print('''
         -----------
@@ -96,17 +118,19 @@ def play_hand(deck: Deck, player_hand: Hand, dealer_hand: Hand) -> None:
         ''')
 
 def play() -> None:
-    play_again = ''
-    while play_again == '':
+    play_again = True
+    while play_again:
         deck = init_cards()
         print('Shoe Changed')
-        while deck.num_cards > NUM_DECKS*52 / 2 and not play_again:
+        while deck.num_cards > NUM_DECKS*52 / 2 and play_again:
             player_hand, dealer_hand = init_hands(deck)
-            print(f'Cards Left: {deck.num_cards}')
-            print(f'Dealer Showing: {dealer_hand.first_card}')
-            print(f'Player Has: {player_hand.cards}')
+            cards_and_results(deck, player_hand, dealer_hand, True)
             play_hand(deck, player_hand, dealer_hand)
-            play_again = input('Press enter to play again!')
+            print('Would you like to play again! (y)es or (n)o')
+            option = getch()
+            while option not in [b'y', b'n']:
+                option = getch()
+            play_again = True if option == b'y' else False
             clear()
     
 
