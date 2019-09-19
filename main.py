@@ -1,11 +1,17 @@
-from os import system, name 
-from constants import NUM_DECKS
+from os import system, name
+from msvcrt import getch
+from sys import argv
+from time import sleep
+
 from objects.deck import Deck
 from objects.card import Card
 from objects.hand import Hand
-from msvcrt import getch
 
-from time import sleep
+# print(argv[0])
+try:
+    NUM_DECKS = int(argv[1])
+except:
+    NUM_DECKS = 1
 
 def clear() -> None:
     _ = system('cls' if name == 'nt' else 'clear')

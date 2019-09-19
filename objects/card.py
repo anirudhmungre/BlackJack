@@ -15,16 +15,15 @@ class Card:
         if self._value >= 10 or self.value == 1:
             val = name_val[self._value]
         
-        return f"""
- ┌─────────┐
- │{val}        │
- │         │
- │         │
- │    {self.suit}    │
- │         │
- │         │
- │        {val}│
- └─────────┘"""
+        return f"""┌──
+│{val} 
+│{self.suit} 
+│  
+│  
+│  
+│  
+│  
+└──"""
         # return f'{val}{self.suit}'
 
     @property
